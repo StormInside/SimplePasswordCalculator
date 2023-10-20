@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Password Calculator</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="static/styles/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <h1 class="centered-header">Password Calculator</h1>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="alert alert-danger" role="alert" id="validationAlert" hidden>
+                    Please fill out all fields.
+                  </div>
+                <form>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" value="test">
+                    </div>
+                    <div class="form-group">
+                        <label for="domain">Page Domain</label>
+                        <input type="text" class="form-control" id="domain" value="test.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="secret">Secret</label>
+                        <input type="text" class="form-control" id="secret" value="Testing1">
+                    </div>                
+                    <div class="form-group slider-container">
+                        <label for="slider" class="mr-3">Iterations</label>
+                        <input type="range" class="form-control-range mr-3" id="slider" min="5" max="100" value="10">
+                        <input type="number" class="form-control" id="iterations" min="5" max="100" value="10">
+                    </div>
+                    <div class="form-group form-check">
+                        <input class="form-check-input" type="checkbox" id="useSymbols" checked>
+                        <label class="form-check-label" for="useSymbols">Use symbols</label>
+                    </div> 
+                    <button type="button" class="btn btn-primary btn-generate">Generate</button>
+                </form>
+
+                <!-- Results Outputs -->
+                <div class="d-flex align-items-center" style="display: none!important; ">
+                    <label for="btnCopy1" class="mr-2">Hash:</label>
+                    <button id="btnCopy1" class="btn btn-copy" data-clipboard-text="Output 1">
+                        <span>Output 1</span>
+                        <i class="fa fa-clone"></i>
+                    </button>
+                </div>
+                <div class="d-flex align-items-center mt-2" style="display: none!important; ">
+                    <label for="btnCopy2" class="mr-2">Password:</label>
+                    <button id="btnCopy2" class="btn btn-copy" data-clipboard-text="Output 2">
+                        <span>Output 2</span>
+                        <i class="fa fa-clone"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-6 lorem-text">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at fringilla nibh. Donec in lobortis sem. Nulla facilisi. Vivamus fermentum enim ligula, sed consequat nunc cursus at. Phasellus aliquam.</p>
+                <p>Etiam mattis, eros ut dapibus eleifend, turpis purus lobortis tellus, nec bibendum erat magna nec nisi. Vivamus accumsan risus at mi eleifend laoreet.</p>
+                <p>Nulla facilisi. Vivamus fermentum enim ligula, sed consequat nunc cursus at. Phasellus aliquam.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    <script>
+        document.getElementById('slider').addEventListener('input', function(e) {
+            document.getElementById('iterations').value = e.target.value;
+        });
+    </script>
+
+    <script src="node_modules/argon2-browser/lib/argon2.js"></script>
+    <script src="static/scripts/argon2.js"></script>
+    <script src="static/scripts/main.js"></script>
+
+
+</body>
+</html>

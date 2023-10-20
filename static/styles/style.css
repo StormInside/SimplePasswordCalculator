@@ -1,0 +1,49 @@
+body {
+    background-color: #212529;
+    color: #ffffff;
+}
+.form-control, .form-control:focus {
+    background-color: #495057;
+    color: #ffffff;
+    border-color: #ced4da;
+}
+.btn-copy {
+    cursor: pointer;
+    color: #007bff;
+    border: 1px solid #6c757d;
+    padding: 10px;
+    /*margin: 30px;*/
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+.btn-copy span {
+    margin-right: auto;
+}
+.lorem-text {
+    color: #cccccc;
+    padding-top: 3em;
+}
+#iterations {
+    width: 80px;
+}
+.slider-container {
+    display: flex;
+    align-items: center;
+}
+.btn-generate {
+    margin-top: 20px;
+    padding: 10px 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+}
+.centered-header {
+    text-align: center;
+    color: #007bff;
+    margin: 30px;
+}
