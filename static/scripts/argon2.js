@@ -15,8 +15,7 @@ async function custom_argon2(password,
 {
     const hash = await argon2.hash({
         pass: password,
-        salt: salt+password, 
-        secret:new ArrayBuffer(pepper),
+        salt: salt+pepper,
         hashLen: hash_length,
         mem: 1024,
         time: iterations,
@@ -102,13 +101,12 @@ async function test(){
 
     let dont_use_symbols = false
 
-    while (iterations <= 100){
-        result_hash = await custom_argon2(user_secret, username, page_url, iterations)
-        console.log(result_hash)
+    result_hash = await custom_argon2(user_secret, username, page_url, iterations)
+    console.log(result_hash)
 
-        result_password = await transform_hash(result_hash[0], dont_use_symbols)
-        console.log(result_password)
-        iterations=iterations+2
-    }
+    result_password = await transform_hash(result_hash[0], dont_use_symbols)
+    console.log(result_password)
+    iterations=iterations+2
 
 }
+

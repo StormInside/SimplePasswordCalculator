@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="background-color: black;">
+    <button type="button" class="btn btn-primary btn-generate">Generate</button>
+    <script src="node_modules/argon2-browser/lib/argon2.js"></script>
+    <script src="static/scripts/argon2.js"></script>
+    <script src="static/scripts/calculate_password.js"></script>
+    <script src="static/scripts/wordlist.js"></script>
+    <script>
+        const generateButton = document.querySelector('.btn-generate');
+        generateButton.addEventListener('click', async function () {
+            let username = "maila@gmaia.c"
+            let page_url = "gooaagle.com"
+            let user_secret = "monkey_w1tah_b@nana_17"
+
+            let iterations = 20
+
+            let dont_use_symbols = false
+
+            result_hash = await custom_argon2(user_secret, username, page_url, iterations)
+            console.log(result_hash[1])
+            const hash = result_hash[0]
+
+            console.log(generatePassword(hash));
+            });
+    </script>
+</body>
+</html>

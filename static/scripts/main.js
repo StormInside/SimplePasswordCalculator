@@ -1,4 +1,10 @@
+
+
 document.addEventListener('DOMContentLoaded', function () {
+
+    // localStorage.clear()
+    let hashObj = new Hash
+    let storage = new LocalStorage
 
     const alertBox = document.getElementById('validationAlert');
 
@@ -9,16 +15,45 @@ document.addEventListener('DOMContentLoaded', function () {
     const secretInput = document.getElementById('secret');
     const iterationsInput = document.getElementById('iterations');
     const useSymbolsCheckbox = document.getElementById('useSymbols');
+    const removeSavedButton = document.querySelector('.btn-clear');
+    const sliderInput = document.getElementById('slider')
 
-    // Event listener for generate button click
+    console.log(storage.dataList)
+
+
+    // Function to update the saved inputs block
+    function updateSavedInputsBlock() {
+        const savedInputsBlock = document.getElementById('savedInputsBlock');
+        // Clear the block
+        savedInputsBlock.innerHTML = '<h5>Saved Inputs:</h5>';
+        // Retrieve saved inputs from local storage
+        const savedInputs = storage.retrieveData();
+        // Create a button for each saved input set
+        savedInputs.forEach((input, index) => {
+            const inputButton = document.createElement('button');
+            inputButton.textContent = `Input ${index + 1}`;
+            inputButton.classList.add('btn', 'btn-secondary', 'btn-sm', 'm-1');
+            // Event listener to fill the form with saved input when clicked
+            inputButton.addEventListener('click', () => {
+                usernameInput.value = input.username;
+                domainInput.value = input.domain;
+                iterationsInput.value = input.iterations;
+                useSymbolsCheckbox.checked = input.useSymbols;
+            });
+            savedInputsBlock.appendChild(inputButton);
+        });
+    }
+
+    // Initial update of the saved inputs block on page load
+    updateSavedInputsBlock();
+        // Event listener for generate button click
     generateButton.addEventListener('click', async function () {
     // Validate inputs
     if (validateInputs()) {
         try {
             // Inside the generateButton click event listener
             const useSymbols = useSymbolsCheckbox.checked;
-            const output = await calculate_password(usernameInput.value, domainInput.value, secretInput.value, iterationsInput.value, useSymbols);
-
+            const output = await process_inputs(usernameInput.value, domainInput.value, secretInput.value, iterationsInput.value, useSymbols);
             
             // If there is an output, show copy fields and insert output
             if (output && output.length) {
@@ -38,6 +73,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         }
     });
+
+    removeSavedButton.addEventListener('click', async function () {
+        storage.removeAll()
+        updateSavedInputsBlock()
+    })
 
     // Event listener for copy buttons click
     copyButtons.forEach(button => {
@@ -91,16 +131,78 @@ document.addEventListener('DOMContentLoaded', function () {
         return true;
     }
 
-    async function calculate_password(username, domain, secret, iterations, useSymbols) {
-        const result_hash = await custom_argon2(secret, username, domain, iterations)
-        console.log(result_hash[1])
+    async function process_inputs(username, domain, secret, iterations, useSymbols) {
+        
+        const result_hash = await hashObj.createHash(secret, username, domain, iterations, useSymbols)
+        // console.log(result_hash[1])
 
-        const result_password = await transform_hash(result_hash[0], !useSymbols)
-        console.log(result_password)
+        // const result_password = generatePassword(result_hash[0], useSymbols)
+        // console.log(result_password)
+
+        let output = new Output(result_hash[0], useSymbols)
+        let result_password = output.generatePassword()
 
         const hash = result_hash[1]
         const pass = result_password
+        if (saveInputsCheckbox.checked) {
+            storage.storeData(username, domain, iterations, useSymbols)
+            updateSavedInputsBlock()
+        }
+        console.log(storage.dataList)
         return [hash, pass];
     }
 
-    });
+    // Function to update the saved inputs block
+    function updateSavedInputsBlock() {
+        const savedInputsBlock = document.getElementById('savedInputsBlock');
+        // Clear the block
+        savedInputsBlock.innerHTML = '';
+        savedInputsBlock.classList.add('grid-container');
+        // Retrieve saved inputs from local storage
+        const savedInputs = storage.retrieveData();
+        // Create a button for each saved input set
+        savedInputs.forEach((input, index) => {
+            // Create a container div
+            const inputContainer = document.createElement('div');
+            inputContainer.classList.add('input-container', 'd-flex', 'align-items-center', 'mb-2', 'mr-3');
+
+            // Create an input button
+            const inputButton = document.createElement('button');
+            inputButton.innerHTML = `Username: <strong>${input.username}</strong><br>
+                                    Domain: <strong>${input.domain}</strong><br>
+                                    Iterations: <strong>${input.iterations}</strong><br>
+                                    Symbols: <strong>${input.useSymbols}</strong>`;
+            inputButton.classList.add('btn', 'btn-secondary', 'btn-sm', 'flex-grow-1');
+
+            // Event listener to fill the form with saved input when clicked
+            inputButton.addEventListener('click', () => {
+                usernameInput.value = input.username;
+                domainInput.value = input.domain;
+                iterationsInput.value = input.iterations;
+                useSymbolsCheckbox.checked = input.useSymbols;
+                sliderInput.value = input.iterations
+            });
+            // Create a delete button
+            const deleteButton = document.createElement('button');
+            deleteButton.innerHTML = '&times;';
+            deleteButton.classList.add('btn', 'btn-danger', 'btn-sm', 'ml-2');
+            deleteButton.setAttribute('title', 'Delete this input');
+
+            // Event listener to delete the saved input
+            deleteButton.addEventListener('click', function() {
+                // Remove the input from the array and update local storage
+                storage.removeData(index);
+                // Update the saved inputs block
+                updateSavedInputsBlock();
+            });
+
+            // Append the input and delete buttons to the container
+            inputContainer.appendChild(inputButton);
+            inputContainer.appendChild(deleteButton);
+
+            // Append the container to the savedInputsBlock
+            savedInputsBlock.appendChild(inputContainer);
+        });
+    }
+
+    })
