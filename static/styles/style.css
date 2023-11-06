@@ -23,6 +23,9 @@ body {
 .btn-copy span {
     margin-right: auto;
 }
+.btn:hover{
+    color: #ffffff;
+}
 .lorem-text {
     color: #cccccc;
     padding-top: 3em;

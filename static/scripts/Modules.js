@@ -219,7 +219,7 @@ class Output{
     
             // console.log({sl1: [slice1[0], slice1[1]], sl2: [slice2[0], slice2[1]], sl3: [slice3[0], slice3[1]]})
     
-            const charsCount = this.getNumberFromBytes(slice1, 2)+1;
+            const charsCount = this.getNumberFromBytes(slice1, 2);
             const charIds = [this.getNumberFromBytes(slice2, this.characters.length-1), this.getNumberFromBytes(slice3, this.characters.length-1)]
             
             // console.log({charsCount: charsCount, charIds: charIds})
