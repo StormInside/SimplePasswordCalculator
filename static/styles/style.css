@@ -55,3 +55,4 @@ body {
     grid-template-columns: repeat(2, 1fr); /* Creates two columns of equal width */
     grid-gap: 10px; /* Adjust the gap between the blocks */
 }
+.hidden-password { color: transparent; }

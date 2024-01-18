@@ -41,42 +41,37 @@ function getBooleanFromByte(byte) {
 }
 
 function modifyWords(hash, words, characters) {
-
     const words_modified = []
 
     for (let i = 0; i < words.length; i++) {
-        let word = words[i]
-        const hashByteArray = hash.slice(i * 5, i * 5 + 5);
-        
+        let word = words[i];
+        const hashByteArray = hash.slice(i * 7, i * 7 + 7);
+
         const shouldModify = getBooleanFromByte(hashByteArray[0]);
-        const slice1 = hashByteArray.slice(1, 3)
-        const slice2 = hashByteArray.slice(3, 5)
-        // console.log(slice1[0], slice1[1])
-        // console.log(slice2[0], slice2[1])
-        const charPosition = getNumberFromBytes(slice1, word.length-1);
-        const repCharPosition = getNumberFromBytes(slice2, characters.length-1);
-        
-        let mod_word = word
-        const replacementChar = characters[repCharPosition]
+        const shouldCapitalize = getBooleanFromByte(hashByteArray[1]);
+        const slice1 = hashByteArray.slice(2, 4);
+        const slice2 = hashByteArray.slice(4, 6);
+        const charPosition = getNumberFromBytes(slice1, word.length - 1);
+        const repCharPosition = getNumberFromBytes(slice2, characters.length - 1);
 
-        if (shouldModify){
-            mod_word = word.substring(0, charPosition) + replacementChar + word.substring(charPosition + 1);
+        let mod_word = word;
+        const replacementChar = characters[repCharPosition];
+
+        if (shouldModify) {
+            mod_word = mod_word.substring(0, charPosition) + replacementChar + mod_word.substring(charPosition + 1);
         }
-        words_modified.push(mod_word)
 
-        // console.log({
-        //     res: mod_word,
-        //     def: word,
-        //     sh: shouldModify,
-        //     chp: charPosition,
-        //     rchp: repCharPosition,
-        //     rch: replacementChar,
-        //     sl1: slice1,
-        //     sl2: slice2
-        // })
+        if (shouldCapitalize) {
+            const capPosition = getNumberFromBytes(hashByteArray.slice(6, 7), word.length - 1);
+            mod_word = mod_word.split('').map((c, idx) => idx === capPosition ? c.toUpperCase() : c).join('');
+        }
+
+        words_modified.push(mod_word);
     }
+
     return words_modified;
 }
+
 
 function insertBetweenWords(hash, words, characters) {
     result = ""

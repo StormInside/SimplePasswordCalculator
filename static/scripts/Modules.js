@@ -170,68 +170,67 @@ class Output{
     }
 
     modifyWords() {
-
-        const words_modified = []
+        const words_modified = [];
     
         for (let i = 0; i < this.wordsCount; i++) {
-            let word = this.words[i]
+            let word = this.words[i];
+    
+            // Step 1: Convert word to uppercase with a 30% chance for each character
+            let mod_word = word.split('').map((c, idx) => {
+                // Calculate the hash index for this character
+                let hashIndex = (i * word.length + idx) % this.hash.length;
+                let hashValue = this.hash[hashIndex];
+    
+                // Convert hash byte to a number between 0 and 100
+                let chance = (hashValue / 255) * 100;
+    
+                // 30% chance to convert to uppercase
+                return chance < 30 ? c.toUpperCase() : c;
+            }).join('');
+    
+            // Step 2: Replace characters with symbols as in original code
             const hashByteArray = this.hash.slice(i * 5, i * 5 + 5);
-            
             const shouldModify = this.getBooleanFromByte(hashByteArray[0]);
-            const slice1 = hashByteArray.slice(1, 3)
-            const slice2 = hashByteArray.slice(3, 5)
-            // console.log(slice1[0], slice1[1])
-            // console.log(slice2[0], slice2[1])
-            const charPosition = this.getNumberFromBytes(slice1, word.length-1);
-            const repCharPosition = this.getNumberFromBytes(slice2, this.characters.length-1);
-            
-            let mod_word = word
-            const replacementChar = this.characters[repCharPosition]
+            const slice1 = hashByteArray.slice(1, 3);
+            const slice2 = hashByteArray.slice(3, 5);
     
-            if (shouldModify){
-                mod_word = word.substring(0, charPosition) + replacementChar + word.substring(charPosition + 1);
+            const charPosition = this.getNumberFromBytes(slice1, mod_word.length - 1);
+            const repCharPosition = this.getNumberFromBytes(slice2, this.characters.length - 1);
+    
+            if (shouldModify) {
+                const replacementChar = this.characters[repCharPosition];
+                mod_word = mod_word.substring(0, charPosition) + replacementChar + mod_word.substring(charPosition + 1);
             }
-            words_modified.push(mod_word)
     
-            // console.log({
-            //     res: mod_word,
-            //     def: word,
-            //     sh: shouldModify,
-            //     chp: charPosition,
-            //     rchp: repCharPosition,
-            //     rch: replacementChar,
-            //     sl1: slice1,
-            //     sl2: slice2
-            // })
+            words_modified.push(mod_word);
         }
-        this.modifiedWords = words_modified
+        this.modifiedWords = words_modified;
     }
 
     insertBetweenWords() {
-        let result = ""
+        let result = "";
         for (let i = 0; i < this.wordsCount; i++) {
-    
+        
             const hashByteArray = this.hash.slice(i * 6, i * 6 + 6);
             
-            const slice1 = hashByteArray.slice(0, 2)
-            const slice2 = hashByteArray.slice(2, 4)
-            const slice3 = hashByteArray.slice(4, 6)
-    
-            // console.log({sl1: [slice1[0], slice1[1]], sl2: [slice2[0], slice2[1]], sl3: [slice3[0], slice3[1]]})
+            const slice1 = hashByteArray.slice(0, 2);
+            const slice2 = hashByteArray.slice(2, 4);
+            const slice3 = hashByteArray.slice(4, 6);
     
             const charsCount = this.getNumberFromBytes(slice1, 2);
-            const charIds = [this.getNumberFromBytes(slice2, this.characters.length-1), this.getNumberFromBytes(slice3, this.characters.length-1)]
-            
-            // console.log({charsCount: charsCount, charIds: charIds})
+            const charIds = [
+                this.getNumberFromBytes(slice2, this.characters.length-1),
+                this.getNumberFromBytes(slice3, this.characters.length-1)
+            ];
     
-            result = result + this.words[i]
+            result += this.modifiedWords[i]; // Use modified words
     
-            for (let j = 0; j < charsCount; j++){
-                result = result + this.characters[charIds[j]]
+            for (let j = 0; j < charsCount; j++) {
+                result += this.characters[charIds[j]];
             }
             
         }
-        this.password = result
+        this.password = result;
     }
 
     generatePassword() {
