@@ -7,25 +7,119 @@ body {
     color: #ffffff;
     border-color: #ced4da;
 }
-.btn-copy {
+/*.btn {*/
+/*    height: 40px; !* Set common height for all buttons *!*/
+/*}*/
+.btn-icon {
     cursor: pointer;
     color: #007bff;
     border: 1px solid #6c757d;
     padding: 10px;
-    /*margin: 30px;*/
     margin-bottom: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    width: 100%;
+    width: 40px; /* Adjust as needed */
+    height: 100%;
+    position: relative;
 }
+
+.btn-copy {
+    cursor: pointer;
+    color: #007bff;
+    border: 1px solid #6c757d;
+    padding: 10px;
+    height: 38px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    flex-grow: 1; /* Makes the button take the remaining space */
+}
+
 .btn-copy span {
     margin-right: auto;
 }
+
 .btn:hover{
     color: #ffffff;
 }
+
+.tooltip-text {
+    visibility: hidden;
+    width: 100px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+#RevealInputSecret{
+    color: white;
+
+}
+
+
+.input-group .form-control, .input-group .btn {
+    height: 38px; /* Adjust to match the height of your input fields */
+    border: 1px solid #ced4da; /* Adjust to match the border color of your input fields */
+    margin-bottom: 0; /* Remove any margin at the bottom */
+}
+
+.input-group .btn {
+    border-left: 0; /* Remove left border to make it look continuous */
+}
+
+/* Adjust the first button's right border to make it seamless with the input field */
+.input-group .btn:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* Adjust the last button's left border to make it seamless with the first button */
+.input-group .btn:last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Optional: Adjust padding inside the button if necessary */
+.input-group .btn i {
+    margin: 0;
+}
+
+
+.d-flex.align-items-center .btn-copy {
+    /* Assuming .btn-copy is your input field class, remove the border on the right to attach the reveal button */
+    border-right: none;
+}
+
+.d-flex.align-items-center .btn-icon-reveal {
+    /* Adjust the reveal button's border to match the input field, remove the left border, and adjust border-radius */
+    border: 1px solid #6c757d; /* Match input field border */
+    height: 38px; /* Match input field height */
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.btn-copy {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.btn-icon-copy{
+    height: 38px;
+    margin-left: 5px;
+}
+
+
+
 .lorem-text {
     color: #cccccc;
     padding-top: 3em;

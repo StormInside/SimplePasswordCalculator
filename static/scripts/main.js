@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const alertBox = document.getElementById('validationAlert');
 
     const generateButton = document.querySelector('.btn-generate');
-    const copyButtons = document.querySelectorAll('.btn-copy');
+    const copyButtons = document.querySelectorAll('.btn-icon-copy');
+    const resultInput = document.querySelectorAll('.btn-copy');
     const usernameInput = document.getElementById('username');
     const domainInput = document.getElementById('domain');
     const secretInput = document.getElementById('secret');
@@ -58,11 +59,9 @@ document.addEventListener('DOMContentLoaded', function () {
             // If there is an output, show copy fields and insert output
             if (output && output.length) {
             output.forEach((out, index) => {
-                const button = copyButtons[index];
-                const span = button.querySelector('span');
-                span.textContent = out;
-                button.dataset.clipboardText = out;
-                const block = button.parentNode
+                const output_element = resultInput[index];
+                output_element.value = out;
+                const block = output_element.parentNode
                 block.removeAttribute('style');
             });
             }
@@ -79,17 +78,21 @@ document.addEventListener('DOMContentLoaded', function () {
         updateSavedInputsBlock()
     })
 
-    // Event listener for copy buttons click
     copyButtons.forEach(button => {
         button.addEventListener('click', function () {
-            // Copy to clipboard
-            const text = button.dataset.clipboardText;
-            navigator.clipboard.writeText(text).then(() => {
-                // Add "Copied" text if not already added
-                const span = button.querySelector('span');
-                if (!span.textContent.includes(' - Copied')) {
-                    span.textContent += ' - Copied';
-                }
+            // Identify the associated input field. This assumes the input field is just before the button.
+            if (button.id == 'CopyResultHash'){
+                var input = document.getElementById('ResultHash');
+                var tooltip = document.getElementById('tooltipCopyResultHash');}
+            else{
+                var input = document.getElementById('ResultPassword');
+                var tooltip = document.getElementById('tooltipCopyResultPassword');}
+            // Copy the value from the input field to the clipboard
+            navigator.clipboard.writeText(input.value).then(() => {
+                tooltip.style.visibility = 'visible';
+                setTimeout(() => {
+                    tooltip.style.visibility = 'hidden';
+                }, 1000);
             });
         });
     });
