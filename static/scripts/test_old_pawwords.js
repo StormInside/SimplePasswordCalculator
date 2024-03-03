@@ -1,4 +1,4 @@
-const wordList = require('./wordlist');
+const wordList = require('./wordlist_test');
 
 class Output{
     constructor(hash, useSymbols) {
