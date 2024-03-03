@@ -115,19 +115,6 @@
         document.getElementById('iterations').addEventListener('change', function(e) {
             document.getElementById('slider').value = e.target.value;
         });
-        function togglePassword(inputId, buttonId, event) {
-            event.preventDefault();
-            var input = document.getElementById(inputId);
-            var button = document.getElementById(buttonId);
-            if (input.type === "password") {
-                input.type = "text";
-                button.innerHTML = '<i class="fa fa-eye-slash"></i>'; // Change icon to 'eye-slash'
-            } else {
-                input.type = "password";
-                button.innerHTML = '<i class="fa fa-eye"></i>'; // Change icon back to 'eye'
-            }
-        }
-
     </script>
 
     <script src="node_modules/argon2-browser/lib/argon2.js"></script>

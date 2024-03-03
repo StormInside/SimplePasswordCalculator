@@ -155,6 +155,19 @@ document.addEventListener('DOMContentLoaded', function () {
         return [hash, pass];
     }
 
+    function togglePassword(inputId, buttonId, event) {
+        event.preventDefault();
+        var input = document.getElementById(inputId);
+        var button = document.getElementById(buttonId);
+        if (input.type === "password") {
+            input.type = "text";
+            button.innerHTML = '<i class="fa fa-eye-slash"></i>'; // Change icon to 'eye-slash'
+        } else {
+            input.type = "password";
+            button.innerHTML = '<i class="fa fa-eye"></i>'; // Change icon back to 'eye'
+        }
+    }
+
     // Function to update the saved inputs block
     function updateSavedInputsBlock() {
         const savedInputsBlock = document.getElementById('savedInputsBlock');
