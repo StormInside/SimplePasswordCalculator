@@ -1,4 +1,30 @@
 
+document.getElementById('slider').addEventListener('input', function(e) {
+    document.getElementById('iterations').value = e.target.value;
+});
+document.getElementById('iterations').addEventListener('change', function(e) {
+    document.getElementById('slider').value = e.target.value;
+});
+
+document.getElementById('password_length_slider').addEventListener('input', function(e) {
+    document.getElementById('password_length_number').value = e.target.value;
+});
+document.getElementById('password_length_number').addEventListener('change', function(e) {
+    document.getElementById('password_length_slider').value = e.target.value;
+});
+
+function togglePassword(inputId, buttonId, event) {
+    event.preventDefault();
+    var input = document.getElementById(inputId);
+    var button = document.getElementById(buttonId);
+    if (input.type === "password") {
+        input.type = "text";
+        button.innerHTML = '<i class="fa fa-eye-slash"></i>'; // Change icon to 'eye-slash'
+    } else {
+        input.type = "password";
+        button.innerHTML = '<i class="fa fa-eye"></i>'; // Change icon back to 'eye'
+    }
+}
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -18,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const useSymbolsCheckbox = document.getElementById('useSymbols');
     const removeSavedButton = document.querySelector('.btn-clear');
     const sliderInput = document.getElementById('slider')
+    const passwordLengthInput = document.getElementById('password_length_number');
 
     console.log(storage.dataList)
 
@@ -142,8 +169,12 @@ document.addEventListener('DOMContentLoaded', function () {
         // const result_password = generatePassword(result_hash[0], useSymbols)
         // console.log(result_password)
 
-        let output = new Output(result_hash[0], useSymbols)
-        let result_password = output.generatePassword()
+//        let output = new Output(result_hash[0], useSymbols)
+//        let result_password = output.generatePassword(20)
+
+        let password = new PasswordFromLetters(result_hash[0], passwordLengthInput.value, useSymbols);
+        let result_password = password.generatePassword()[0];
+
 
         const hash = result_hash[1]
         const pass = result_password
@@ -151,21 +182,8 @@ document.addEventListener('DOMContentLoaded', function () {
             storage.storeData(username, domain, iterations, useSymbols)
             updateSavedInputsBlock()
         }
-        console.log(storage.dataList)
+//        console.log(storage.dataList)
         return [hash, pass];
-    }
-
-    function togglePassword(inputId, buttonId, event) {
-        event.preventDefault();
-        var input = document.getElementById(inputId);
-        var button = document.getElementById(buttonId);
-        if (input.type === "password") {
-            input.type = "text";
-            button.innerHTML = '<i class="fa fa-eye-slash"></i>'; // Change icon to 'eye-slash'
-        } else {
-            input.type = "password";
-            button.innerHTML = '<i class="fa fa-eye"></i>'; // Change icon back to 'eye'
-        }
     }
 
     // Function to update the saved inputs block

@@ -1,15 +1,4 @@
 
-
-function containsAnyCharacter(str, characters) {
-    for (let i = 0; i < str.length; i++) {
-        if (characters.includes(str[i])) {
-            return true;
-        }
-    }
-    return false;
-}
-
-
 function seededRandom(seed) {
     var mask = 0xffffffff;
     var m_w  = (123456789 + seed) & mask;
@@ -42,7 +31,6 @@ function shuffle(array, salt) {
         randomIndex = Math.floor(random() * currentIndex);
         currentIndex--;
 
-        // Swap elements
         [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
     }
     return array;
@@ -61,15 +49,12 @@ function generatePassword(hashByteArray, length, includeSpecialChars = false) {
     const allChars = numbers + lowerCaseLetters + upperCaseLetters + specialChars;
     let charArray = allChars.split('');
 
-//    charArray = shuffle(charArray, hashByteArray);
-
-//    console.log(charArray.length)
+    charArray = shuffle(charArray, hashByteArray);
 
     let password = '';
     for (let i = 0; i < length; i++) {
         var hashByte = hashByteArray[i % hashByteArray.length];
         var hashIndex = hashByte % charArray.length;
-//        var hashIndex = Math.ceil(hashByte / (256 / charArray.length));
         password += charArray[hashIndex];
     }
 
@@ -96,6 +81,29 @@ function generatePassword(hashByteArray, length, includeSpecialChars = false) {
     return [password, problems];
 }
 
+function containsAnyCharacter(str, characters) {
+    for (let i = 0; i < str.length; i++) {
+        if (characters.includes(str[i])) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function isThereAProblem(problems) {
+    return Object.values(problems).some(value => value === true);
+}
+
+//function resolveProblems(password, problems) {
+//
+//    if (isThereAProblem(problems)) {
+//        console.log("The password has a problem.");
+//
+//
+//    } else {
+//        console.log("The password meets all criteria.");
+//    }
+//}
 
 //var testHashByteArray = [5,51,105,2,194,83,46,120,119,241,126];
 //var res = generatePassword(testHashByteArray, 10, true);

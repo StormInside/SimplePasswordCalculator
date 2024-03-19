@@ -79,10 +79,10 @@ def get_entropy_for_passwords(passwords_file, passwords_hash_file, draw_graph=Fa
     print('Entropy diff:', round(compare_entropies(max_entropy, password_entropy) * 100, 4), '%')
 
 
-get_entropy_for_passwords('../static/scripts/passwords_50.txt', '../static/scripts/passwords_hash.txt', False)
-get_entropy_for_passwords('../static/scripts/passwords_20.txt', '../static/scripts/passwords_hash.txt', False)
-get_entropy_for_passwords('../static/scripts/passwords_10.txt', '../static/scripts/passwords_hash.txt', False)
-get_entropy_for_passwords('../static/scripts/passwords_old.txt', '../static/scripts/passwords_hash_old.txt', False)
+get_entropy_for_passwords('../static/scripts/passwords_50.txt', '../static/scripts/passwords_hash.txt', True)
+get_entropy_for_passwords('../static/scripts/passwords_20.txt', '../static/scripts/passwords_hash.txt', True)
+get_entropy_for_passwords('../static/scripts/passwords_10.txt', '../static/scripts/passwords_hash.txt', True)
+# get_entropy_for_passwords('../static/scripts/passwords_old.txt', '../static/scripts/passwords_hash_old.txt', False)
 
 
 # Shuffle 50
