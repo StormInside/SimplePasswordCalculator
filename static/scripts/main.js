@@ -81,7 +81,12 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             // Inside the generateButton click event listener
             const useSymbols = useSymbolsCheckbox.checked;
-            const output = await process_inputs(usernameInput.value, domainInput.value, secretInput.value, iterationsInput.value, useSymbols);
+            const output = await process_inputs(usernameInput.value,
+                                                domainInput.value,
+                                                secretInput.value,
+                                                iterationsInput.value,
+                                                passwordLengthInput.value,
+                                                useSymbols);
             
             // If there is an output, show copy fields and insert output
             if (output && output.length) {
@@ -161,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return true;
     }
 
-    async function process_inputs(username, domain, secret, iterations, useSymbols) {
+    async function process_inputs(username, domain, secret, iterations, password_length, useSymbols) {
         
         const result_hash = await hashObj.createHash(secret, username, domain, iterations, useSymbols)
         // console.log(result_hash[1])
@@ -172,14 +177,14 @@ document.addEventListener('DOMContentLoaded', function () {
 //        let output = new Output(result_hash[0], useSymbols)
 //        let result_password = output.generatePassword(20)
 
-        let password = new PasswordFromLetters(result_hash[0], passwordLengthInput.value, useSymbols);
+        let password = new PasswordFromLetters(result_hash[0], password_length, useSymbols);
         let result_password = password.generatePassword()[0];
 
 
         const hash = result_hash[1]
         const pass = result_password
         if (saveInputsCheckbox.checked) {
-            storage.storeData(username, domain, iterations, useSymbols)
+            storage.storeData(username, domain, iterations, password_length, useSymbols)
             updateSavedInputsBlock()
         }
 //        console.log(storage.dataList)
@@ -200,12 +205,21 @@ document.addEventListener('DOMContentLoaded', function () {
             const inputContainer = document.createElement('div');
             inputContainer.classList.add('input-container', 'd-flex', 'align-items-center', 'mb-2', 'mr-3');
 
-            // Create an input button
+            var input_block = `Username: <strong>${input.username}</strong><br>
+                   Domain: <strong>${input.domain}</strong><br>`;
+
+            if (input.iterations != 10){
+                input_block += `Iterations: <strong>${input.iterations}</strong><br>`;
+            }
+            if (input.password_length != 20){
+                input_block += `Password Length: <strong>${input.password_length}</strong><br>`;
+            }
+            if (input.useSymbols != true){
+                input_block += `Use Symbols: <strong>${input.useSymbols}</strong>`;
+            }
+
             const inputButton = document.createElement('button');
-            inputButton.innerHTML = `Username: <strong>${input.username}</strong><br>
-                                    Domain: <strong>${input.domain}</strong><br>
-                                    Iterations: <strong>${input.iterations}</strong><br>
-                                    Symbols: <strong>${input.useSymbols}</strong>`;
+            inputButton.innerHTML = input_block;
             inputButton.classList.add('btn', 'btn-secondary', 'btn-sm', 'flex-grow-1');
 
             // Event listener to fill the form with saved input when clicked
@@ -213,6 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 usernameInput.value = input.username;
                 domainInput.value = input.domain;
                 iterationsInput.value = input.iterations;
+                passwordLengthInput.value = input.password_length;
                 useSymbolsCheckbox.checked = input.useSymbols;
                 sliderInput.value = input.iterations
             });

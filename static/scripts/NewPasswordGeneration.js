@@ -131,29 +131,29 @@ class PasswordFromLetters{
 
     }
 
-function generatePasswords(password_length = 10) {
-
-    const fs = require('fs');
-    const crypto = require('crypto');
-
-    const passwords = [];
-    const arrays = [];
-    for (let i = 0; i < 100000; i++) {
-        const buffer = crypto.randomBytes(64);
-        const testHashByteArray = Array.from(buffer);
-
-        p = new PasswordFromLetters(testHashByteArray, password_length, true);
-        const password = p.generatePassword()[0];
-        passwords.push(password);
-
-        arrays.push(testHashByteArray.join(','));
-
-    }
-
-    fs.writeFileSync('passwords_hash.txt', arrays.join('\n'));
-    fs.writeFileSync('passwords_'+password_length+'.txt', passwords.join('\n'));
-}
-
-generatePasswords(10);
-generatePasswords(20);
-generatePasswords(50);
+//function generatePasswords(password_length = 10) {
+//
+//    const fs = require('fs');
+//    const crypto = require('crypto');
+//
+//    const passwords = [];
+//    const arrays = [];
+//    for (let i = 0; i < 100000; i++) {
+//        const buffer = crypto.randomBytes(64);
+//        const testHashByteArray = Array.from(buffer);
+//
+//        p = new PasswordFromLetters(testHashByteArray, password_length, true);
+//        const password = p.generatePassword()[0];
+//        passwords.push(password);
+//
+//        arrays.push(testHashByteArray.join(','));
+//
+//    }
+//
+//    fs.writeFileSync('passwords_hash.txt', arrays.join('\n'));
+//    fs.writeFileSync('passwords_'+password_length+'.txt', passwords.join('\n'));
+//}
+//
+//generatePasswords(10);
+//generatePasswords(20);
+//generatePasswords(50);

@@ -38,10 +38,11 @@ class LocalStorage {
         return Object.values(this.dataList).some(existingData => JSON.stringify(existingData) === JSON.stringify(newData));
     }
 
-    storeData(username, domain, iterations, useSymbols) {
+    storeData(username, domain, iterations, password_length, useSymbols) {
         let newData = {username: username,
                         domain: domain,
                         iterations: iterations,
+                        password_length: password_length,
                         useSymbols: useSymbols
                     }
         if (!this.isDataExist(newData)){
@@ -64,21 +65,6 @@ class LocalStorage {
     removeAll() {
         this.dataList = []
         this.updateStorage()
-    }
-}
-
-class SavedData {
-    constructor(username, domain, iterations, useSymbols) {
-        this.data = {
-            username: username,
-            domain: domain,
-            iterations: iterations,
-            useSymbols: useSymbols
-        };
-    }
-
-    stringify() {
-        return JSON.stringify(this.data);
     }
 }
 
